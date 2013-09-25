@@ -1,0 +1,132 @@
+html, body{
+	width: 100%;
+	height: 100%;
+}
+
+body{
+	font-family: "Helvetica", sans-serif;
+	font-size: 13px;
+}
+
+h1{
+	font-size: 5em;
+	font-weight: bold;
+}
+
+h2{
+	font-size: 1.5em;
+}
+
+.wrapper{
+	width: 90%;
+	height:95%;
+	margin: 0 auto;
+	text-align:center;
+	padding: 1%;
+}
+
+.instruction{
+	position:absolute;
+	left:1%;
+	top:5px;
+	font-size:12px;
+}
+
+.title{
+	margin:10% auto ;
+}
+
+.giraffe{
+	position:absolute;
+	right:2%;
+	bottom:2%;
+}
+
+.elephant{
+	position:absolute;
+	left:2%;
+	bottom:2%;
+}
+
+.monkey{
+	position:absolute;
+	left:15%;
+	bottom:2%;
+	width:60%;
+}
+
+.dog{
+	position:absolute;
+	left:20%;
+	bottom:2%;
+}
+
+.banana{
+	position:absolute;
+	right:20%;
+	bottom:2%;
+}
+
+@media screen and (min-width: 1400px) {
+	body{
+		background-color: #FFB000;
+	}
+
+	.title{
+		margin:25% auto ;
+	}
+
+	h1,h2{
+		color: #634700;
+	}
+}
+
+@media screen and (max-width: 1400px) and (min-width: 1000px) {
+	body{
+		background-color: #68AA00;
+	}
+
+	h1,h2{
+		color: #fff;
+	}
+}
+
+@media screen and (max-width: 1000px) and (min-width: 750px) {
+	body{
+		background-color: #D1B839;
+	}
+
+	h1,h2{
+		color: #302800;
+	}
+}
+
+@media screen and (max-width: 750px) and (min-width: 570px) {
+	body{
+		background-color: #55CFFF;
+	}
+
+	h1,h2{
+		color: #302800;
+	}
+}
+
+@media screen and (max-width: 570px) and (min-width: 430px) {
+	body{
+		background-color: #41F9D6;
+	}
+
+	h1,h2{
+		color: #302800;
+	}
+}
+
+@media screen and (max-width: 430px){
+	body{
+		background-color: #00C600;
+	}
+
+	h1,h2{
+		color: #302800;
+	}
+}
