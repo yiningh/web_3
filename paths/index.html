@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>midterm</title>
+        <meta name="description" content="midterm for Jamie's web 3 class">
+        <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    </head>
+    <body>
+        <input id="siteInput" type="text" contenteditable></input>
+        <button id="btn" onclick="">go</button>
+        <div id="main-container"></div>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="js/three.min.js"></script>
+        <script src="js/tween.min.js"></script>
+        <script src="js/TrackballControls.js"></script>
+        <script src="js/CSS3DRenderer.js"></script>
+
+    	<script type="text/javascript">
+            var siteLink;
+            loadPage('http://www.moma.org/');
+            var btn = document.getElementById('btn');
+
+            btn.addEventListener('click',function(evt) {
+                siteLink = document.getElementById('siteInput').value;
+                evt.preventDefault();
+                evt.stopPropagation();
+                $('#main-container').html('');
+                loadPage(siteLink);
+            });
+
+            function loadPage(siteLink){
+                $.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent(siteLink) + '&callback=?',
+                    function(data){
+                        //var divText = $(data.contents).find('div').text();
+                        //console.log(data.contents);
+                        var links = $(data.contents).filter('link');
+                        var scripts = $(data.contents).filter('script');
+                        var divs = $(data.contents).find('div');
+                        //var head = $(data.contents).filter('head');
+                        //console.log(head);
+                        // for(var i = 0; i < divs.length; i++){
+                        //     $(divs[i]).css({'float':'left'});
+                        // }
+                        console.log(scripts);
+                        console.log(links);
+                        $('#main-container').append(links);
+                        //console.log(data.contents);
+                        $('#main-container').append(divs);
+                        $('#main-container').append(scripts);
+                    }
+                );
+            }   
+
+            // $.ajax({
+            //     url: 'proxy.php',
+            //     type: 'POST',
+            //     data: {
+            //         address: 'http://www.google.com/'
+            //     },
+            //     success: function(res) {
+            //         console.log('this is cool!');
+
+            //         var headline = $(res.responseText);
+            //         console.log(headline);
+            //     }
+            // });
+
+            // $.ajax({
+            //    type: 'GET',
+            //    url: "http://www.google.com/",
+            //    processData: true,
+            //    data: {},
+            //    dataType: "json",
+            //    success: function (data) {
+            //        processData(data);
+            //    }
+            // });
+             
+            // function processData(data){
+            //     //console.log(data);
+            // }
+
+
+    	</script>
+        <script type="text/javascript" src="js/script.js"></script>
+    </body>
+</html>
+		

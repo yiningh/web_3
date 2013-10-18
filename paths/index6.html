@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>midterm</title>
+        <meta name="description" content="midterm for Jamie's web 3 class">
+        <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    </head>
+    <body>
+        <input id="siteInput" type="text" contenteditable></input>
+        <button id="btn" onclick="">go</button>
+        <div id="main-container"></div>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="js/three.min.js"></script>
+        <script src="js/tween.min.js"></script>
+        <script src="js/TrackballControls.js"></script>
+        <script src="js/CSS3DRenderer.js"></script>
+
+    	<script type="text/javascript">
+            var siteLink = 'http://www.w3schools.com/';
+            var btn = document.getElementById('btn');
+
+            btn.addEventListener('click',function(evt) {
+                siteLink = document.getElementById('siteInput').value;
+                evt.preventDefault();
+                evt.stopPropagation();
+                $('#main-container').html('');
+                loadPage(siteLink);
+            });
+
+            loadPage(siteLink);
+
+            function loadPage(siteLink){
+                //--------------trim and return the root input url ----------
+                if( siteLink.indexOf('http') == 0){
+                    siteLink = siteLink + 'http://';
+                }
+                siteLink = siteLink.split('/').slice(0,3);
+                siteLink = siteLink[0] +'/'+ siteLink[1] +'/'+ siteLink[2];
+
+                $.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent(siteLink) + '&callback=?',
+                    function(data){
+                        var scripts = $(data.contents).filter('script');
+                        var links = $(data.contents).filter('link');
+                        var divs = $(data.contents).find('div');//.add($(data.contents).find('div')).get();
+                        var imgs = $(data.contents).filter('img').add($(divs).find('img'));
+                        var atags = $(data.contents).find('a');
+                        var uls = $(data.contents).find('ul');
+                        var articles = $(data.contents).filter('articles').add($(data.contents).find('articles'));
+
+                        for( var i = 0; i < divs.length; i++ ){
+                            if( divs[i].querySelector('script') ){
+                                divs[i].querySelector('script').remove();
+                            }
+                        }
+
+                        //---------check if the source failed--------------
+                        if(links.length > 0){
+                            for(var i = 0; i < links.length; i ++){
+                                var url = links[i].getAttribute('href');
+                                if( url.substring(0,2) == '//' ){
+                                    url = 'http:' + url;
+                                    links[i].setAttribute('href',url);
+                                }else
+                                if( url.substring(0, 1) == '/' ){
+                                    url = siteLink + url;
+                                    links[i].setAttribute('href',url);
+                                }else
+                                if( url.substring(0,4) != 'http' ){
+                                    url = siteLink + url;
+                                    links[i].setAttribute('href',url);
+                                }
+                                $('#main-container').append(links[i]);
+                            }
+                        }
+
+                        if( imgs.length > 0 ){
+                            for(var i = 0; i < imgs.length; i ++){
+                                var url = imgs[i].getAttribute('src');
+                                if( url.substring(0,1) == '/' ){
+                                    url = siteLink + url;
+                                    imgs[i].setAttribute('src',url);
+                                }else
+                                if( url.substring(0,2) == '//' ){
+                                    url = 'http:' + url;
+                                    imgs[i].setAttribute('src',url);
+                                }else
+                                if( url.substring(0, 4) != 'http' ){
+                                    url = siteLink + '/' + url;
+                                    imgs[i].setAttribute('src',url);
+                                }
+                            }
+                        }
+                        if( atags.length > 0 ){
+                            for(var i = 0; i < atags.length; i ++){
+                                var url = atags[i].getAttribute('href');
+                                if( url != null ){
+                                    if( url.substring(0,1) != '#' && url.substring(0,4) != 'http' ){
+                                        if( url.substring(0,2) == '//' ){
+                                            url = 'http:' + url;
+                                            atags[i].setAttribute('href',url);
+                                        }else
+                                        if( url.substring(0,1) == '/' ){
+                                            url = siteLink + url;
+                                            atags[i].setAttribute('href',url);
+                                        }else
+                                        if( url.substring(0,4) != 'http' ){
+                                            url = siteLink + '/' + url;
+                                            atags[i].setAttribute('href',url);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        //----------------------------end of checking----------------------------------
+
+                        for(var i = 0; i < divs.length; i++){
+                            $(divs[i]).css({'float':'left'});
+                        }
+                        $('#main-container').append(divs);
+                        $('#main-container').append(articles);
+                        $('#main-container').append(uls);
+                        
+                    }
+                );
+            }   
+    	</script>
+        <script type="text/javascript" src="js/script.js"></script>
+    </body>
+</html>
+		
