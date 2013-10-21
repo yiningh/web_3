@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>web3D</title>
+        <meta name="description" content="midterm for Jamie's web 3 class">
+        <link rel="stylesheet" type="text/css" href="css/reset.css"/>
+        <link rel="stylesheet" type="text/css" href="css/main.css"/>
+        <link rel="shortcut icon" href="favicon.ico" />
+    </head>
+    <body>
+        <!-- Aloha! this project is created for 
+            WEB 3 class with 
+            Jamie Kosoy
+            at Parsons The New School For Design
+            
+            author: Yi Ning Huang / hsnu20054@gmail.com
+            three.js code adopted from Mr. doob's CSS3D examples.
+            2013 Oct.
+        -->
+        <nav id="mynav">
+            <div id="myform" class="shadow">
+                <div id="center-margin">
+                    <div id="mylogo"></div>
+                    <input id="siteInput" type="text" onclick="this.value='';" value="twitter.com"  style="color: #006C7A;" onfocus="if (this.value == 'twitter.com') {this.value=''; this.style.color='#fff';}" contenteditable></input>
+                    <div id="mybtn"><p>GO</p></div>
+                </div>
+                <p class="mydescription" style="font-size: 0.8em;">project Web3D is created for Jamie Kosoy's Web 3 class at Parsons DT. 2013. Yi Ning Huang.</p>
+            </div>
+            <div id="mytab"></div>
+        </nav>
+
+        <div id="myloading">
+            <div id="myloader"></div>
+            <p class="error-msg">note: make sure to input a valid address</p>
+        </div>
+
+        <div id="mymain-container"></div>
+
+        <script src="js/jquery-1.10.2.min.js"></script>
+        <script src="js/three.min.js"></script>
+        <script src="js/tween.min.js"></script>
+        <script src="js/CSS3DRenderer.js"></script>
+
+    	<script type="text/javascript"> 
+            var scripts, links, divs, imgs, atages, uls, articles, headers;
+            var container = document.getElementById('mymain-container');
+            var siteLink = 'http://twitter.com';
+            var clicked = false;
+            var tab = document.getElementById('mytab');
+            var nav = document.getElementById('mynav');
+            var btn = document.getElementById('mybtn');
+            var input = document.getElementById('siteInput');
+            var loading = document.getElementById('myloading');
+            var form = document.getElementById('myform');
+            var logo = document.getElementById('mylogo');
+            var centerMargin = document.getElementById('center-margin');
+
+            tab.addEventListener('click', function(evt){
+                evt.preventDefault();
+                evt.stopPropagation();
+                nav.classList.toggle('sliding');
+            }, false);
+
+            input.addEventListener('keydown', function(evt){
+                if( evt.keyCode == 13 ){
+                    reload(evt);
+                }
+            }, false);
+
+            btn.addEventListener('click',function(evt) {
+                reload(evt);
+            },false);
+
+            logo.addEventListener('click', function(evt){ //display landing page
+                evt.preventDefault();
+                evt.stopPropagation();
+                tab.style.display = 'none';
+                form.style.height = '100%';
+                nav.style.height = '100%';
+                centerMargin.style.paddingTop = '25%';
+                form.style.background = '#00bddf url(' + '\'' +  'img/bg2.png' + '\'' + ') no-repeat ';
+            }, false);
+
+            function reload(evt){
+                evt.preventDefault();
+                evt.stopPropagation();
+                tab.style.display = 'block';
+                siteLink = input.value;
+                nav.style.height = '70px';
+                form.style.height = '70px';
+                form.style.background = '#00bddf';
+                centerMargin.style.paddingTop = 0;
+                $('#mymain-container').html('');
+                scripts = []; links = []; divs = []; imgs = []; atages = []; uls = []; articles = []; headers = [];
+                objects = []; ulObjects = []; artObjects = []; headerObjects = [];
+                init(siteLink);
+                //animate();
+            }
+
+            //--------------------three.js starts------------
+            var camera, scene, renderer;
+            var objects = [];
+            var ulObjects = [];
+            var artObjects = [];
+            var headerObjects = [];
+
+            init(siteLink);
+            animate();
+
+            function init(siteLink) {
+                camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 5000 );
+                camera.position.z = -100;
+                scene = new THREE.Scene();
+
+                loadPage(siteLink);
+
+                function loadPage(siteLink){
+                    loading.style.display = "block";
+                    //--------------trim and return the root input url ----------
+                    if( siteLink.substring(0,4) != 'http'){
+                        siteLink = 'http://' + siteLink;
+                    }
+                    siteLink = siteLink.split('/').slice(0,3);
+                    siteLink = siteLink[0] +'/'+ siteLink[1] +'/'+ siteLink[2];
+
+                    $.ajax({
+                        dataType: 'json',
+                        url:'http://whateverorigin.org/get?url=' + encodeURIComponent(siteLink) + '&callback=?',
+                        success: function(data){
+                            scripts = $(data.contents).filter('script');
+                            links = $(data.contents).filter('link');
+                            divs = $(data.contents).find('div');
+                            imgs = $(data.contents).filter('img').add($(divs).find('img'));
+                            uls = $(data.contents).find('ul');
+                            articles = $(data.contents).filter('articles').add($(data.contents).find('articles'));
+                            headers = $(data.contents).find('header');
+                            navs = $(data.contents).find('nav').add($(divs).find('nav'));
+                            atags = $(data.contents).find('a').add($(data.contents).filter('a')).add($(divs).find('a')).add($(navs).find('a')).add($(headers).find('a')).add($(uls).find('a'));
+
+                            for( var i = 0; i < divs.length; i++ ){
+                                if( divs[i].querySelector('script') ){
+                                    divs[i].querySelector('script').remove();
+                                }
+                            }
+
+                            //---------check if the source failed--------------
+                            if(links.length > 0){
+                                for(var i = 0; i < links.length; i ++){
+                                    var url = links[i].getAttribute('href');
+                                    if(url != null){
+                                        if( url.substring(0,2) == '//' ){
+                                            url = 'http:' + url;
+                                            links[i].setAttribute('href',url);
+                                        }else
+                                        if( url.substring(0, 1) == '/' ){
+                                            url = siteLink + url;
+                                            links[i].setAttribute('href',url);
+                                        }else
+                                        if( url.substring(0,4) != 'http' ){
+                                            url = siteLink + url;
+                                            links[i].setAttribute('href',url);
+                                        }
+                                        $('#mymain-container').append(links[i]);
+                                    }
+                                }
+                            }
+
+                            if( imgs.length > 0 ){
+                                for(var i = 0; i < imgs.length; i ++){
+                                    var url = imgs[i].getAttribute('src');
+                                    if(url != null){
+                                        if( url.substring(0,2) == '//' ){
+                                            url = 'http:' + url;
+                                            imgs[i].setAttribute('src',url);
+                                        }else
+                                        if( url.substring(0,1) == '/' ){
+                                            url = siteLink + url;
+                                            imgs[i].setAttribute('src',url);
+                                        }else
+                                        if( url.substring(0, 4) != 'http' ){
+                                            url = siteLink + '/' + url;
+                                            imgs[i].setAttribute('src',url);
+                                        }
+
+                                        if( imgs[i].hasAttribute('data-thumb') ){
+                                            var dataThumb = imgs[i].getAttribute('data-thumb');
+                                            if( dataThumb.length > 0){
+                                                if( dataThumb.substring(0,2) == '//' ){
+                                                    dataThumb = 'http:' + url;
+                                                    imgs[i].setAttribute('data-thumb',dataThumb);
+                                                }else
+                                                if( dataThumb.substring(0,1) == '/' ){
+                                                    dataThumb = siteLink + dataThumb;
+                                                    imgs[i].setAttribute('data-thumb',dataThumb);
+                                                }else
+                                                if( dataThumb.substring(0, 4) != 'http' ){
+                                                    dataThumb = siteLink + '/' + dataThumb;
+                                                    imgs[i].setAttribute('data-thumb',dataThumb);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if( atags.length > 0 ){
+                                for(var i = 0; i < atags.length; i ++){
+                                    var url = atags[i].getAttribute('href');
+                                    if(url != null){
+                                        if( url.substring(0,1) != '#' && url.substring(0,4) != 'http' ){
+                                            if( url.substring(0,2) == '//' ){
+                                                url = 'http:' + url;
+                                                atags[i].setAttribute('href',url);
+                                            }else
+                                            if( url.substring(0,1) == '/' ){
+                                                url = siteLink + url;
+                                                atags[i].setAttribute('href',url);
+                                            }else
+                                            if( url.substring(0,4) != 'http' ){
+                                                url = siteLink + '/' + url;
+                                                atags[i].setAttribute('href',url);
+                                            }
+                                        }
+                                    }
+                                    atags[i].setAttribute('target','_blank');   
+                                    atags[i].onclick = function(e) {
+                                        if(!clicked) {
+                                        clicked = true;
+                                        timer = setTimeout(function() { clicked = false }, 500);  
+                                        e.preventDefault();
+                                        }  
+                                    }
+                                    
+                                }
+                            }
+                            //----------------------------end of checking----------------------------------
+
+                            if( divs.length > 0 ){
+                                for(var i = 0; i < divs.length; i++){
+                                    divs[i].onload = loading.style.display = "none";
+                                    divs[i].className = 'divModule';
+                                    divs[i].setAttribute('data', i);
+                                    var object = new THREE.CSS3DObject( divs[i] );
+                                    object.position.x = Math.random() * 6000 - 3000;
+                                    object.position.y = Math.random() * 6000 - 3000;
+                                    object.position.z = Math.random() * -50000 - 300;
+                                    scene.add( object );
+
+                                    objects.push( object );
+                                    
+                                    divs[i].addEventListener( 'click', function ( event ) {
+                                        //event.preventDefault();
+                                        event.stopPropagation();
+                                        var numberI = this.getAttribute('data');
+                                        var object = objects[ numberI ];
+                                        var distance = ( camera.position.z - object.position.z) - 500;
+                                        new TWEEN.Tween( camera.position )
+                                            .to( { x: object.position.x, y: object.position.y }, 1500 )
+                                            .easing( TWEEN.Easing.Exponential.InOut )
+                                            .start();
+                                        for ( var j = 0; j < ulObjects.length; j ++){
+                                            var newZPos = ulObjects[j].position.z + distance;
+                                            new TWEEN.Tween( ulObjects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                        for ( var j = 0; j < objects.length; j ++){
+                                            var newZPos = objects[j].position.z + distance;
+                                            new TWEEN.Tween( objects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                        for ( var j = 0; j < artObjects.length; j ++){
+                                            var newZPos = artObjects[j].position.z + distance;
+                                            new TWEEN.Tween( artObjects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                        for ( var j = 0; j < headerObjects.length; j ++){
+                                            var newZPos = headerObjects[j].position.z + distance;
+                                            new TWEEN.Tween( headerObjects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                    }, false);
+                                    transform();
+                                }
+                            }
+
+
+                            if( uls.length > 0 ){
+                                for(var i = 0; i < uls.length; i++){
+                                    uls[i].className = 'ulModule';
+                                    uls[i].setAttribute('data', i);
+                                    var object = new THREE.CSS3DObject( uls[i] );
+                                    object.position.x = Math.random() * 6000 - 3000;
+                                    object.position.y = Math.random() * 6000 - 3000;
+                                    object.position.z = Math.random() * -50000 - 300;
+                                    scene.add( object );
+
+                                    ulObjects.push( object );
+
+                                    uls[i].addEventListener( 'click', function ( event ) {
+                                        //event.preventDefault();
+                                        event.stopPropagation();
+                                        var numberI = this.getAttribute('data');
+                                        var object = ulObjects[ numberI ];
+                                        var distance = ( camera.position.z - object.position.z) - 500;
+                                        new TWEEN.Tween( camera.position )
+                                            .to( { x: object.position.x, y: object.position.y }, 1500 )
+                                            .easing( TWEEN.Easing.Exponential.InOut )
+                                            .start();
+                                        for ( var j = 0; j < ulObjects.length; j ++){
+                                            var newZPos = ulObjects[j].position.z + distance;
+                                            new TWEEN.Tween( ulObjects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                        for ( var j = 0; j < objects.length; j ++){
+                                            var newZPos = objects[j].position.z + distance;
+                                            new TWEEN.Tween( objects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                        for ( var j = 0; j < artObjects.length; j ++){
+                                            var newZPos = artObjects[j].position.z + distance;
+                                            new TWEEN.Tween( artObjects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                        for ( var j = 0; j < headerObjects.length; j ++){
+                                            var newZPos = headerObjects[j].position.z + distance;
+                                            new TWEEN.Tween( headerObjects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                    }, false);
+                                    transform();
+                                }
+                            }
+
+                            if( articles.length > 0 ){
+                                for(var i = 0; i < articles.length; i++){
+                                    artilces[i].className = 'articleModule';
+                                    articles[i].setAttribute('data', i);
+                                    var object = new THREE.CSS3DObject( articles[i] );
+                                    object.position.x = Math.random() * 5000 - 2500;
+                                    object.position.y = Math.random() * 1500 - 750;
+                                    object.position.z = Math.random() * -50000 - 300;
+                                    scene.add( object );
+
+                                    artObjects.push( object );
+
+                                    articles[i].addEventListener( 'click', function ( event ) {
+                                        //event.preventDefault();
+                                        event.stopPropagation();
+                                        var numberI = this.getAttribute('data');
+                                        var object = artObjects[ numberI ];
+                                        var distance = ( camera.position.z - object.position.z) - 500;
+                                        new TWEEN.Tween( camera.position )
+                                            .to( { x: object.position.x, y: object.position.y }, 1500 )
+                                            .easing( TWEEN.Easing.Exponential.InOut )
+                                            .start();
+                                        for ( var j = 0; j < ulObjects.length; j ++){
+                                            var newZPos = ulObjects[j].position.z + distance;
+                                            new TWEEN.Tween( ulObjects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                        for ( var j = 0; j < objects.length; j ++){
+                                            var newZPos = objects[j].position.z + distance;
+                                            new TWEEN.Tween( objects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                        for ( var j = 0; j < artObjects.length; j ++){
+                                            var newZPos = artObjects[j].position.z + distance;
+                                            new TWEEN.Tween( artObjects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                        for ( var j = 0; j < headerObjects.length; j ++){
+                                            var newZPos = headerObjects[j].position.z + distance;
+                                            new TWEEN.Tween( headerObjects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                    }, false);
+                                    transform();
+                                }
+                            }
+
+                            if( headers.length > 0 ){
+                                for(var i = 0; i < headers.length; i++){
+                                    headers[i].className = 'articleModule';
+                                    headers[i].setAttribute('data', i);
+                                    var object = new THREE.CSS3DObject( headers[i] );
+                                    object.position.x = Math.random() * 6000 - 3000;
+                                    object.position.y = Math.random() * 6000 - 3000;
+                                    object.position.z = Math.random() * -50000 - 300;
+                                    scene.add( object );
+
+                                    headerObjects.push( object );
+
+                                    headers[i].addEventListener( 'click', function ( event ) {
+                                        //event.preventDefault();
+                                        event.stopPropagation();
+                                        var numberI = this.getAttribute('data');
+                                        var object = headerObjects[ numberI ];
+                                        var distance = ( camera.position.z - object.position.z) - 500;
+                                        new TWEEN.Tween( camera.position )
+                                            .to( { x: object.position.x, y: object.position.y }, 1500 )
+                                            .easing( TWEEN.Easing.Exponential.InOut )
+                                            .start();
+                                        for ( var j = 0; j < ulObjects.length; j ++){
+                                            var newZPos = ulObjects[j].position.z + distance;
+                                            new TWEEN.Tween( ulObjects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                        for ( var j = 0; j < objects.length; j ++){
+                                            var newZPos = objects[j].position.z + distance;
+                                            new TWEEN.Tween( objects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                        for ( var j = 0; j < artObjects.length; j ++){
+                                            var newZPos = artObjects[j].position.z + distance;
+                                            new TWEEN.Tween( artObjects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                        for ( var j = 0; j < headerObjects.length; j ++){
+                                            var newZPos = headerObjects[j].position.z + distance;
+                                            new TWEEN.Tween( headerObjects[j].position )
+                                                .to( { z: newZPos }, 1500 )
+                                                .easing( TWEEN.Easing.Exponential.InOut )
+                                                .start();
+                                        }
+                                    }, false);
+                                    transform();
+                                }
+                            }}
+                    }); //end of getJSON
+                }//end of loadPage function
+
+                renderer = new THREE.CSS3DRenderer();
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                renderer.domElement.style.position = 'absolute';
+                container.appendChild( renderer.domElement );
+                window.addEventListener( 'resize', onWindowResize, false );
+            } // end of init();
+
+            function move( delta ) {
+                for ( var i = 0; i < scene.children.length; i ++ ) {
+                    var object = scene.children[i];
+                    object.position.z += delta;
+                    if ( object.position.z > 0 ) {
+                        object.position.z -= 5000;
+                    } else if ( object.position.z < - 5001 ) {
+                        object.position.z = -5000;
+                    }
+                }
+            }
+
+            function transform() {
+                TWEEN.removeAll();
+                var duration = 5000;
+                for ( var i = 0; i < scene.children.length; i ++ ) {
+                    var object = scene.children[i];
+                    var tx = Math.random() * 2000 - 1000;
+                    var ty = Math.random() * 1500 - 750;
+                    var tz = Math.random() * -5000 + 300;
+                    new TWEEN.Tween( object.position )
+                        .to( { x: tx, y: ty, z: tz}, Math.random() * duration + duration )
+                        .easing( TWEEN.Easing.Exponential.InOut )
+                        .start();
+                }
+                new TWEEN.Tween( this )
+                    .to( {}, duration * 2 )
+                    .onUpdate( render )
+                    .start();
+            }
+
+            function onWindowResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                render();
+            }
+
+            function animate() {
+                TWEEN.update();
+                move(1);
+
+                requestAnimationFrame( animate );
+                render();
+            }
+
+            function render() {
+                renderer.render( scene, camera );
+            }
+    	</script>
+    </body>
+</html>
+		
