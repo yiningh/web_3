@@ -42,7 +42,7 @@
         <script src="js/CSS3DRenderer.js"></script>
 
     	<script type="text/javascript"> 
-            var scripts, links, divs, imgs, atages, uls, articles, headers;
+            var scripts, links, divs, imgs, atages, uls, articles, headers, forms;
             var container = document.getElementById('mymain-container');
             var siteLink = 'http://twitter.com';
             var clicked = false;
@@ -136,6 +136,7 @@
                             headers = $(data.contents).find('header');
                             navs = $(data.contents).find('nav').add($(divs).find('nav'));
                             atags = $(data.contents).find('a').add($(data.contents).filter('a')).add($(divs).find('a')).add($(navs).find('a')).add($(headers).find('a')).add($(uls).find('a'));
+                            forms = $(divs).find('form').add($(divs).find('button'));
 
                             for( var i = 0; i < divs.length; i++ ){
                                 if( divs[i].querySelector('script') ){
@@ -223,6 +224,37 @@
                                     }
                                     atags[i].setAttribute('target','_blank');   
                                     atags[i].onclick = function(e) {
+                                        if(!clicked) {
+                                        clicked = true;
+                                        timer = setTimeout(function() { clicked = false }, 500);  
+                                        e.preventDefault();
+                                        }  
+                                    }
+                                    
+                                }
+                            }
+
+                            if( forms.length > 0 ){
+                                for(var i = 0; i < forms.length; i ++){
+                                    var url = forms[i].getAttribute('action');
+                                    if(url != null){
+                                        if( url.substring(0,1) != '#' && url.substring(0,4) != 'http' ){
+                                            if( url.substring(0,2) == '//' ){
+                                                url = 'http:' + url;
+                                                forms[i].setAttribute('action',url);
+                                            }else
+                                            if( url.substring(0,1) == '/' ){
+                                                url = siteLink + url;
+                                                forms[i].setAttribute('action',url);
+                                            }else
+                                            if( url.substring(0,4) != 'http' ){
+                                                url = siteLink + '/' + url;
+                                                forms[i].setAttribute('action',url);
+                                            }
+                                        }
+                                    }
+                                    forms[i].setAttribute('target','_blank');   
+                                    forms[i].onclick = function(e) {
                                         if(!clicked) {
                                         clicked = true;
                                         timer = setTimeout(function() { clicked = false }, 500);  
