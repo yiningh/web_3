@@ -24,10 +24,10 @@
                 <div id="myInputs" class="fullStyle">
                     <img id="web3d" src="img/web3d-2.png" alt="web3d"/>
                     <div id="mylogo" class="hide"></div>
-                    <input id="siteInput" type="text" onclick="this.value='';" value="twitter.com"  style="color: #fff;" onfocus="if (this.value == 'twitter.com') {this.value=''; this.style.color='#fff';}" contenteditable></input>
+                    <input id="siteInput" type="text" onclick="this.value='';" value="twitter.com"  style="color: #fff;" onfocus="this.value=''; this.style.color='#fff';" onblur="if(this.value == '') { this.value = 'enter a valid root address'; this.style.color='#0089a2'; }" contenteditable></input>
                     <div id="mybtn" style="line-height: 44px !important; font-size: 16px !important;">GO</div>
                     <div id="myInfo">
-                        <p><span style="font-weight: bold;">1. Enter</span> a valid web root address.<br/>
+                        <p><span style="font-weight: bold;">1. Enter</span> a valid root address.<br/>
                             <span style="font-weight: bold;">2. Click</span> on items to navigate.<br/><span span style="font-weight: bold;">3. Double click</span> to open the item links.<br/>
 
                         <span style="font-size: 0.9em">
