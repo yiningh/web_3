@@ -2,6 +2,8 @@
 <html>
     <head>
         <title>web3D</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width">
         <meta name="description" content="midterm for Jamie's web 3 class">
         <link rel="stylesheet" type="text/css" href="css/reset.css"/>
         <link rel="stylesheet" type="text/css" href="css/main.css"/>
@@ -17,14 +19,27 @@
             three.js code adopted from Mr. doob's CSS3D examples.
             2013 Oct.
         -->
-        <nav id="mynav">
-            <div id="myform" class="shadow">
-                <div id="center-margin">
-                    <div id="mylogo"></div>
-                    <input id="siteInput" type="text" onclick="this.value='';" value="twitter.com"  style="color: #006C7A;" onfocus="if (this.value == 'twitter.com') {this.value=''; this.style.color='#fff';}" contenteditable></input>
-                    <div id="mybtn"><p>GO</p></div>
+        <nav id="mynav" class="expand">
+            <div id="myform" class="expand">
+                <div id="myInputs" class="fullStyle">
+                    <img id="web3d" src="img/web3d-2.png" alt="web3d"/>
+                    <div id="mylogo" class="hide"></div>
+                    <input id="siteInput" type="text" onclick="this.value='';" value="twitter.com"  style="color: #fff;" onfocus="if (this.value == 'twitter.com') {this.value=''; this.style.color='#fff';}" contenteditable></input>
+                    <div id="mybtn" style="line-height: 44px !important; font-size: 16px !important;">GO</div>
+                    <div id="myInfo">
+                        <p><span style="font-weight: bold;">1. Enter</span> a valid web root address.<br/>
+                            <span style="font-weight: bold;">2. Click</span> on items to navigate.<br/><span span style="font-weight: bold;">3. Double click</span> to open the item links.<br/>
+
+                        <span style="font-size: 0.9em">
+                            works with most of static websites. Roots only.
+                            Build with <a href="http://threejs.org/" target="_blank" style="text-decoration:underline; color:#0089a2">three.js</a> and <a href="http://whateverorigin.org/" target="_blank" style="text-decoration:underline; color:#0089a2">whateverorigin.org.</a>
+
+                            <span style="font-weight: bold;"> web3d</span> is a project created for Jamie Kosoy's Web 3 class at Parsons The New School For Design.
+                            2013. Yi Ning Huang. hsnu20054@gmail.com</p>
+                        </span>
+                    </div>
                 </div>
-                <p class="mydescription" style="font-size: 0.8em;">project Web3D is created for Jamie Kosoy's Web 3 class at Parsons DT. 2013. Yi Ning Huang.</p>
+                <p id="mydescription" class="hide" style="font-size: 0.8em;"><span style="font-weight: bold;">Click</span> on items to navigate. <span style="font-weight: bold;">Double click</span> to open the item links. 2013. Yi Ning Huang.</p>
             </div>
             <div id="mytab"></div>
         </nav>
@@ -53,7 +68,11 @@
             var loading = document.getElementById('myloading');
             var form = document.getElementById('myform');
             var logo = document.getElementById('mylogo');
-            var centerMargin = document.getElementById('center-margin');
+            var myInputs = document.getElementById('myInputs');
+            var info = document.getElementById('myInfo');
+            var des = document.getElementById('mydescription');
+            var web3d = document.getElementById('web3d');
+
 
             tab.addEventListener('click', function(evt){
                 evt.preventDefault();
@@ -75,10 +94,16 @@
                 evt.preventDefault();
                 evt.stopPropagation();
                 tab.style.display = 'none';
-                form.style.height = '100%';
-                nav.style.height = '100%';
-                centerMargin.style.paddingTop = '25%';
-                form.style.background = '#00bddf url(' + '\'' +  'img/bg2.png' + '\'' + ') no-repeat ';
+                form.classList.remove('collapsed','myshadow');
+                form.classList.add('expand');
+                nav.classList.remove('collapsed');
+                nav.classList.add('expand');
+                myInputs.classList.remove('barStyle');
+                myInputs.classList.add('fullStyle');
+                info.classList.remove('hide');
+                des.classList.add('hide');
+                web3d.classList.remove('hide');
+                logo.classList.add('hide');
             }, false);
 
             function reload(evt){
@@ -86,15 +111,22 @@
                 evt.stopPropagation();
                 tab.style.display = 'block';
                 siteLink = input.value;
-                nav.style.height = '70px';
-                form.style.height = '70px';
+                nav.classList.remove('expand');
+                nav.classList.add('collapsed');
+                form.classList.remove('collapsed');
+                form.classList.add('expand','myshadow');
                 form.style.background = '#00bddf';
-                centerMargin.style.paddingTop = 0;
+                myInputs.classList.add('barStyle');
+                myInputs.classList.remove('fullStyle');
+                info.classList.add('hide');
+                des.classList.remove('hide');
+                web3d.classList.add('hide');
+                logo.classList.remove('hide');
                 $('#mymain-container').html('');
                 scripts = []; links = []; divs = []; imgs = []; atages = []; uls = []; articles = []; headers = [];
                 objects = []; ulObjects = []; artObjects = []; headerObjects = [];
                 init(siteLink);
-                //animate();
+                animate();
             }
 
             //--------------------three.js starts------------
@@ -104,8 +136,8 @@
             var artObjects = [];
             var headerObjects = [];
 
-            init(siteLink);
-            animate();
+            // init(siteLink);
+            // animate();
 
             function init(siteLink) {
                 camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 5000 );
@@ -548,5 +580,6 @@
             }
     	</script>
     </body>
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
 </html>
 		
