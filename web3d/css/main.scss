@@ -79,14 +79,14 @@ input{
 }
 
 #mylogo{
-	background: url('../img/mylogo.png') no-repeat;
-	width: 47px;
-	height: 48px;
+	background: url('../img/mylogo.png') no-repeat 0 0;
+	width: 42px;
+	height: 43px;
 	float:left;
 	margin: 0;
 	cursor:pointer;
 	&:hover{
-		background: url('../img/mylogo-hover.png') no-repeat;
+		background: url('../img/mylogo-hover.png') no-repeat 0 0;
 	}
 }
 
@@ -130,9 +130,8 @@ input{
 	position:relative;
 	margin: 0 auto;
 	cursor: pointer;
-	display: block;
 	&:hover{
-		background: url('../img/tab-hover.png') no-repeat;
+		background: url('../img/tab-hover.png') no-repeat; 
 	}
 }
 
