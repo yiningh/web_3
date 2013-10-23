@@ -126,7 +126,6 @@ input {
   position: relative;
   margin: 0 auto;
   cursor: pointer;
-  display: block;
 }
 #mytab:hover {
   background: url("../img/tab-hover.png") no-repeat;

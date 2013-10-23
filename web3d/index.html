@@ -93,7 +93,6 @@
             logo.addEventListener('click', function(evt){ //display landing page
                 evt.preventDefault();
                 evt.stopPropagation();
-                tab.style.display = 'none';
                 form.classList.remove('collapsed','myshadow');
                 form.classList.add('expand');
                 nav.classList.remove('collapsed');
@@ -104,12 +103,12 @@
                 des.classList.add('hide');
                 web3d.classList.remove('hide');
                 logo.classList.add('hide');
+                tab.classList.add('hide');
             }, false);
 
             function reload(evt){
                 evt.preventDefault();
                 evt.stopPropagation();
-                tab.style.display = 'block';
                 siteLink = input.value;
                 nav.classList.remove('expand');
                 nav.classList.add('collapsed');
@@ -122,6 +121,7 @@
                 des.classList.remove('hide');
                 web3d.classList.add('hide');
                 logo.classList.remove('hide');
+                tab.classList.remove('add');
                 $('#mymain-container').html('');
                 scripts = []; links = []; divs = []; imgs = []; atages = []; uls = []; articles = []; headers = [];
                 objects = []; ulObjects = []; artObjects = []; headerObjects = [];
