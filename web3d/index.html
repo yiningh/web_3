@@ -22,9 +22,11 @@
         <nav id="mynav" class="expand">
             <div id="myform" class="expand">
                 <div id="myInputs" class="fullStyle">
-                    <img id="web3d" src="img/web3d-2.png" alt="web3d"/>
+                    <div id="perspective">
+                        <img src="img/web3d-2.png" id="web3d" alt="web3d"/>
+                    </div>
                     <div id="mylogo" class="hide"></div>
-                    <input id="siteInput" type="text" onclick="this.value='';" value="twitter.com"  style="color: #fff;" onfocus="this.value=''; this.style.color='#fff';" onblur="if(this.value == '') { this.value = 'enter a valid root address'; this.style.color='#0089a2'; }" contenteditable></input>
+                    <input id="siteInput" type="text" onclick="this.value='';" value="twitter.com"  style="color: #fff;" onfocus="this.value=''; this.style.color='#fff';" onblur="if(this.value == '') { this.value = 'enter valid root address'; this.style.color='#0089a2'; }" contenteditable></input>
                     <div id="mybtn" style="line-height: 44px !important; font-size: 16px !important;">GO</div>
                     <div id="myInfo">
                         <p><span style="font-weight: bold;">1. Enter</span> a valid root address.<br/>
@@ -72,7 +74,21 @@
             var info = document.getElementById('myInfo');
             var des = document.getElementById('mydescription');
             var web3d = document.getElementById('web3d');
+            var rotateBox = document.getElementById('rotateBox');
+            var mouseX, mouseY;
 
+            document.onmousemove = function(e){
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                var valueX = mapping(mouseX, 0, window.innerWidth, -10, 10);
+                var valueY = mapping(mouseY, 0, window.innerHeight, -10, 10);
+                web3d.style.transform = 'rotateY(' + valueX + 'deg) rotateX(' + valueY + 'deg)';
+                web3d.style.webkitTransform = 'rotateY(' + valueX + 'deg) rotateX(' + valueY + 'deg)';
+                web3d.style.msTransform = 'rotateY(' + valueX + 'deg) rotateX(' + valueY + 'deg)';
+            }
+            function mapping(value, low1, high1, low2, high2) {
+                return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+            }
 
             tab.addEventListener('click', function(evt){
                 evt.preventDefault();
