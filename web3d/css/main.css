@@ -1,4 +1,4 @@
-html, body, #mymain-container {
+html, body, #yiningMainContainer {
   width: 100%;
   height: 100%;
   line-height: 1em;
@@ -12,7 +12,7 @@ input {
   padding: 0;
 }
 
-#mynav {
+#yiningNav {
   position: absolute;
   z-index: 99999;
   width: 100%;
@@ -20,32 +20,32 @@ input {
   -webkit-transition: all 800ms ease-in-out;
 }
 
-.collapsed {
+.yiningCollapsed {
   height: 70px;
 }
 
-.expand {
+.yiningExpands {
   height: 100%;
 }
 
-.sliding {
+.yiningSliding {
   top: -57px;
 }
 
-#myform {
+#yiningForm {
   width: 100%;
   background: #00bddf;
   transition: all 1000ms ease-in-out;
   -webkit-transition: all 1200ms ease-in-out;
 }
 
-.myshadow {
+.yiningShadow {
   -webkit-box-shadow: 0px 2px 12px rgba(50, 50, 50, 0.6);
   -moz-box-shadow: 0px 2px 12px rgba(50, 50, 50, 0.6);
   box-shadow: 0px 2px 12px rgba(50, 50, 50, 0.6);
 }
 
-#myInputs {
+#yiningInputs {
   width: 50%;
   height: 42px;
   max-width: 600px;
@@ -53,19 +53,19 @@ input {
   -webkit-transition: position 800ms ease-in-out;
 }
 
-.barStyle {
+.yiningBarStyle {
   position: raletive;
   padding: 13px 0 0;
   margin: 0 auto;
 }
 
-.fullStyle {
+.yiningFullStyle {
   position: absolute;
   left: 30%;
   top: 30%;
 }
 
-#perspective {
+#yiningPerspective {
   perspective: 150;
   -webkit-perspective: 150;
 }
@@ -75,7 +75,7 @@ input {
   margin: 0 0 20px;
 }
 
-#mylogo {
+#yiningLogo {
   background: url("../img/mylogo.png") no-repeat 0 0;
   width: 42px;
   height: 43px;
@@ -83,7 +83,7 @@ input {
   margin: 0;
   cursor: pointer;
 }
-#mylogo:hover {
+#yiningLogo:hover {
   background: url("../img/mylogo-hover.png") no-repeat 0 0;
 }
 
@@ -103,7 +103,7 @@ input {
   outline: none;
 }
 
-#mybtn {
+#yiningBtn {
   background: white;
   float: left;
   width: 5%;
@@ -120,11 +120,11 @@ input {
   vertical-align: middle;
   cursor: pointer;
 }
-#mybtn:hover {
+#yiningBtn:hover {
   background: #0092ac;
 }
 
-#mytab {
+#yiningTab {
   background: url("../img/tab.png") no-repeat;
   width: 79px;
   height: 38px;
@@ -132,11 +132,11 @@ input {
   margin: 0 auto;
   cursor: pointer;
 }
-#mytab:hover {
+#yiningTab:hover {
   background: url("../img/tab-hover.png") no-repeat;
 }
 
-#mydescription {
+#yiningDescription {
   color: #0092ac;
   font-size: 0.8em;
   float: right;
@@ -148,24 +148,24 @@ input {
   right: 2%;
 }
 
-#myInfo {
+#yiningInfo {
   clear: both;
   padding: 15px 0 20px 0;
   width: 80%;
   margin: 0 auto;
 }
-#myInfo p {
+#yiningInfo p {
   font-size: 1em;
   color: #0089a2;
   line-height: 1.5em;
   text-align: center;
 }
 
-.hide {
+.yiningHides {
   display: none;
 }
 
-#myloading {
+#yiningLoading {
   position: absolute;
   z-index: 99;
   width: 100%;
@@ -173,14 +173,14 @@ input {
   text-align: center;
 }
 
-#myloader {
+#yiningLoader {
   background: url("../img/loading.gif") no-repeat;
   width: 43px;
   height: 11px;
   margin: 0 auto;
 }
 
-.error-msg {
+.yiningError-msg {
   font-size: 1.5em;
   font-weight: bold;
   text-align: center;
@@ -188,7 +188,7 @@ input {
   margin: 15px auto;
 }
 
-#mymain-container {
+#yiningMainContainer {
   position: absolute;
   background: #ffffff;
   background: -moz-radial-gradient(center, ellipse cover, white 0%, #f3f3f3 50%, #b5b5b5 100%);
@@ -200,8 +200,15 @@ input {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#b5b5b5',GradientType=1 );
 }
 
+#yiningLikes {
+  z-index: 99999;
+  position: fixed;
+  bottom: 5px;
+  left: 10px;
+}
+
 @media screen and (min-width: 1450px) {
-  .fullStyle {
+  .yiningFullStyle {
     left: 35%;
   }
 
@@ -210,16 +217,16 @@ input {
   }
 }
 @media screen and (max-width: 950px) {
-  #mydescription {
+  #yiningDescription {
     position: fixed;
     top: auto;
     bottom: 1%;
     right: 2%;
-    max-width: 95%;
+    max-width: 75%;
   }
 }
 @media screen and (max-width: 800px) {
-  #myInputs {
+  #yiningInputs {
     width: 70%;
   }
 
@@ -227,12 +234,12 @@ input {
     width: 60%;
   }
 
-  .fullStyle {
+  .yiningFullStyle {
     left: 20%;
   }
 }
 @media screen and (max-width: 768px) {
-  #myInputs {
+  #yiningInputs {
     width: 80%;
   }
 
@@ -240,17 +247,17 @@ input {
     width: 67%;
   }
 
-  .fullStyle {
+  .yiningFullStyle {
     left: 10%;
     top: 15%;
   }
 
-  #mylogo {
+  #yiningLogo {
     width: 100%;
     margin: 0 0 8px 0;
     background-position: center;
   }
-  #mylogo:hover {
+  #yiningLogo:hover {
     background-position: center;
   }
 
@@ -261,25 +268,25 @@ input {
     text-indent: 10px;
   }
 
-  #mybtn {
+  #yiningBtn {
     width: 100%;
     margin: 0 0 8px 0;
   }
 
-  #myInfo {
+  #yiningInfo {
     width: 100%;
   }
 
-  .collapsed {
+  .yiningCollapsed {
     height: 180px;
   }
 
-  .sliding {
+  .yiningSliding {
     top: -170px;
   }
 }
 @media screen and (max-width: 500px) {
-  #myInputs {
+  #yiningInputs {
     width: 80%;
   }
 }
