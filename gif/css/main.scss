@@ -1,0 +1,345 @@
+$yellow: #ffb600;
+
+.center {
+	margin: 0 auto;
+}
+
+.floatLeft {
+	float:left;
+}
+
+.floatRight {
+	float: right;
+}
+
+#html, body{
+	width: 100%;
+	height: 100%;
+	background: #d8d4d4;
+	font-family: 'Helvetical', sans-serif;
+	background-image: url('../image/bottom.png');
+	background-repeat: repeat-x;
+	background-position: right bottom;
+	overflow: hidden;
+}
+
+a { 
+	text-decoration: none;
+}
+
+#gallery{
+	width: 10%;
+	min-width: 150px;
+	heigth: 100%;
+	max-height:100%;
+	max-width: 280px;	
+	display: inline-block;
+	background: #000;
+	float:left;
+	overflow-y: scroll;
+	transition: all 1000ms ease-in-out;
+	-webkit-transition: all 1200ms ease-in-out;
+}
+
+.artistName {
+	color: #888;
+	padding: 2px 0 2px 8%;
+	font-size: 0.7em;
+}
+
+.collapsed {
+	margin-left: -32%;	
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(50,50,50,0.8); 
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); */
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(100,100,100,0.4); 
+}
+
+.galleryImg{
+	width: 80%;
+	height: auto;
+	margin: 10px 2% 15px 10%;
+	opacity: 0.7;
+	&:hover{
+		opacity:1;
+		cursor: pointer;
+	}
+}
+
+#leftPanel{
+	float: left;
+	width: 17%;
+	margin: 3% 5% 35px 5%;
+	transition: all 1000ms ease-in-out;
+	-webkit-transition: all 1200ms ease-in-out;
+}
+
+#controls{
+	margin: 0 0 0 15px;
+	float: left;
+	width: 113px;
+	text-align: center;
+}
+
+#logo{
+ width:100%;
+}
+
+.logoWrapper {
+	margin: 250px auto;
+	width: 100%;
+}
+
+.btn{
+	margin-top:20px;
+	font-family:Arial, sans-serif;
+	display:block;
+	width:100%;
+	padding:8px 10px;
+	background:#000;
+	color:white;
+	text-decoration:none;
+	font-size:1.1em;
+	text-align:center;
+	cursor: pointer;
+
+	&:hover {
+		background: $yellow;
+		color: #000;
+	}
+}
+
+.HolidayBtnWrapper {
+	width: 205px;
+	position: absolute;
+	bottom: 3%;
+	right: 4%;
+	cursor: pointer;
+}
+
+#drawingArea {
+	padding:10% 0 0 10%;
+	transition: all 1000ms ease-in-out;
+	-webkit-transition: all 1200ms ease-in-out;
+	width: 80%;
+}
+
+#bgCanvas{
+	float: left;
+} 
+
+#drawingPad{
+	margin-left: -390px;
+	float: left;
+	cursor: crosshair;
+}
+
+.hide {
+	display: none;
+}
+
+.instruction {
+	font-weight: bold;
+	font-size: 0.9em;
+	padding: 10px 0 10px 0;
+	color: #888;
+}
+
+.adjustBtns {
+	cursor: pointer;
+	width: 25px;
+	height: 25px;
+	color: #ffffff;
+	background: #000000;
+	font-size: 0.9em;
+	text-align: center;
+	display: block;
+	line-height: 23px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	
+	&:hover{
+		opacity: 0.7;
+	}
+}
+
+.leftRight {
+	width: 67%;
+	height: 25px;
+	display:block;
+}
+
+.magnifier {
+	height: 58px;
+}
+
+#big {
+	width: 34px;
+	height: 33px;
+	background-image: url('../image/plus.png');
+	margin-top: 15px;
+	cursor: pointer;
+	
+	&:hover {
+		opacity: 0.7;
+	}
+}
+
+#small {
+	width: 34px;
+	height: 33px;
+	background-image: url('../image/minus.png');
+	margin-top: 15px;
+	cursor: pointer;
+	
+	&:hover {
+		opacity: 0.7;
+	}
+}
+
+#palette {
+	margin-top: 5px;
+	display:block;
+	height: 240px;
+}
+
+li {
+    margin:8px -4px 0 18px;
+    padding:0;
+    border:2px solid white;
+    display:block;
+    width:30px;
+    height:30px;
+    cursor:pointer;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+
+    &:hover {
+    	opacity: 0.7;
+    }
+}
+
+li.active {
+    border:2px solid #666;
+}
+
+#sign {
+	width: 350px;	
+	height:27px;
+	display: block;
+	font-size: 2em;
+	margin-bottom: 30px;
+}
+
+#username {
+	background: none;
+	border: none;
+	color: #888;
+	border-bottom: 2px solid #000;
+	outline: none;
+	font-size: 0.7em;
+	width: 185px;
+}
+
+#loadingArea {
+	position: absolute;
+	top: 50%;
+	left:50%;
+	width: 300px;
+	height: 200px;
+	z-index: 11;
+	background-color: #000;
+	text-align: center;
+	color: #fff;
+	font-size: 1.3em;
+	font-weight: bold;
+}
+
+#loadingImg {
+	width: 128px;
+	margin: 20% auto 5%;	
+}
+
+@media (max-width: 960px) {
+	#drawingArea {
+		left: 17%;
+		top: 270px;
+	}
+	#leftPanel {
+		width: 100%;
+		margin: 20px auto 0;
+	}
+	.logoWrapper {
+		width: 20%;
+		margin: 35px auto 35px;
+	}
+
+	#gallery{
+		width: 100%;
+		min-width: 100%;
+		max-width: 110%;
+		heigth: 190px;
+		max-height: 190px;	
+		display: block;
+		overflow-x: scroll;
+		overflow-y: hidden;
+	}
+	.collapsed {
+		margin-top: -195%;	
+	}
+	.galleryImg{
+		width: 80px;
+		margin: 10px 8px 10px 8px;
+		display:block;
+	}
+	.artistName{
+		width:80px;
+	}
+	#horizontalScroll{
+		width: 1000px;
+	}
+}
+
+@media (max-width: 730px) {
+	#drawingArea {
+		top: 290px;
+	}
+	.logoWrapper {
+		width: 28%;
+	}
+}
+
+@media (max-width: 650px) {
+	#drawingArea {
+		left: 10%;
+	}
+	.logoWrapper {
+		width: 35%;
+	}
+}
+
+@media (max-width: 580px) {
+	#drawingArea {
+		left: 3%;
+	}
+}
